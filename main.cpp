@@ -28,6 +28,15 @@ TEST_CASE("Constructor test", "[Matrix]")
     REQUIRE(Matrix(1, 1).get(0, 0) == 0);
 }
 
+TEST_CASE("operator== test", "[Matrix]"){
+    REQUIRE((Matrix(0, 0) == Matrix(0, 0)));
+    REQUIRE_FALSE((Matrix(0, 0) == Matrix(1, 2)));
+    REQUIRE_FALSE((Matrix(1, 3) == Matrix(0, 1)));
+    REQUIRE_FALSE((Matrix(2, 2, 2) == Matrix(3, 3, 2)));
+    REQUIRE((Matrix(4, 3, 5) == Matrix(4, 3, 5)));
+    REQUIRE((Matrix(4, 4, IDENTITY) == Matrix(4, 4, IDENTITY)));
+}
+
 
 //template <typename T>
 //void print_test_failed(T value, T expected, const char* message){
@@ -191,17 +200,17 @@ void TestPlus_TwoIncorrectMatGot_SumReturns(){
 }
 
 
-//bool check_almost_equal(double a, double b, double max_rel_diff){
-//    double diff = std::abs(a - b);
-//    a = std::abs(a);
-//    b = std::abs(b);
-//
-//    double largest = std::max(a, b);
-//    if ((diff <= largest * max_rel_diff) || (a == b)){
-//        return true;
-//    }
-//    return false;
-//}
+bool check_almost_equal(double a, double b, double max_rel_diff){
+    double diff = std::abs(a - b);
+    a = std::abs(a);
+    b = std::abs(b);
+
+    double largest = std::max(a, b);
+    if ((diff <= largest * max_rel_diff) || (a == b)){
+        return true;
+    }
+    return false;
+}
 //
 //void constructor_test(unsigned int height, unsigned int width, double value){
 //    std::cout << "Initializing matrix with" << std::endl;

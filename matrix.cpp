@@ -3,6 +3,7 @@
 #include <cstring>
 #include "matrix.h"
 
+static bool check_almost_equal(double a, double b, double max_rel_diff = pow(10, -10));
 
 Matrix::Matrix(unsigned int height,unsigned int width, double value){
 
@@ -195,6 +196,27 @@ Matrix Matrix::operator* (const Matrix& other){
     return result;
 }
 
+bool Matrix::operator== (const Matrix& other){
+    // case of null-matrix
+    if (width * height == 0){
+        if (other.width * other.height == 0)
+            return true;
+        return false;
+    }
+    else{   // if matrices are not null then check dimensions and data
+        if (height == other.height && width == other.width){
+            for (int i = 0; i < width * height; i++){
+                if (!check_almost_equal(data_1d[i], other.data_1d[i]))
+                    return false;
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+}
+
 // find trace of matrix
 double Matrix::tr(){
 
@@ -373,4 +395,16 @@ void Matrix::free_memory(){
 
     height = 0;
     width = 0;
+}
+
+bool check_almost_equal(double a, double b, double max_rel_diff){
+    double diff = std::abs(a - b);
+    a = std::abs(a);
+    b = std::abs(b);
+
+    double largest = std::max(a, b);
+    if ((diff <= largest * max_rel_diff) || (a == b)){
+        return true;
+    }
+    return false;
 }
