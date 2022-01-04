@@ -1,3 +1,6 @@
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+
 #include "matrix.h"
 #include <iostream>
 #include <cmath>
@@ -18,6 +21,13 @@
 #define ANSI_BACK_COLOR_GREEN
 
 #endif
+
+
+TEST_CASE("Constructor test", "[Matrix]")
+{
+    REQUIRE(Matrix(1, 1).get(0, 0) == 0);
+}
+
 
 //template <typename T>
 //void print_test_failed(T value, T expected, const char* message){
@@ -87,12 +97,6 @@ double test_array6[4][4] = {{7, 11, 9, 10},
                             {3, 4, 3, 4}};
 
 
-int main() {
-
-    TestPlus_TwoCorrectMatGot_SumReturns();
-    TestPlus_TwoIncorrectMatGot_SumReturns();
-    return 0;
-}
 
 void print_test_message(const char* message){
     std::cout << message;
