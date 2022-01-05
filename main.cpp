@@ -6,26 +6,71 @@
 #include <cmath>
 
 
-#ifndef _WIN32
-
-#define ANSI_COLOR_RESET   "\x1b[0m"
-
-#define ANSI_BACK_COLOR_RED   "\x1b[41m"
-#define ANSI_BACK_COLOR_GREEN "\x1b[42m"
-
-#else
-
-#define ANSI_COLOR_RESET
-
-#define ANSI_BACK_COLOR_RED
-#define ANSI_BACK_COLOR_GREEN
-
-#endif
+#define PLUS_REQUIRE(a, b, result)                                                          \
+{                                                                                           \
+    for (int row = 0; row < a.get_height(); row++)                                          \
+        for (int col = 0; col < a.get_width(); col++)                                       \
+            REQUIRE((a.get(row, col) + b.get(row, col)) == Approx(result.get(row, col)));   \
+}                                                                                           \
 
 
-TEST_CASE("Constructor test", "[Matrix]")
-{
-    REQUIRE(Matrix(1, 1).get(0, 0) == 0);
+#define DOT_REQUIRE(a, b, result)                                                           \
+{                                                                                           \
+    for (int row = 0; row < a.get_height(); row++)                                          \
+        for (int col = 0; col < b.get_width(); col++){                                      \
+            double cell = 0.0;                                                              \
+            for (int i = 0; i < a.get_width(); i++)                                         \
+                cell += a.get(row, i) * b.get(i, col);                                      \
+        REQUIRE(result.get(row, col) == Approx(cell));                                      \
+        }                                                                                   \
+}                                                                                           \
+
+
+double test_array1[2][2] = {{1, 2},
+                            {4, 3}};
+double test_array2[2][2] = {{2, 2},
+                            {2, 2}};
+double test_array3[3][3] = {{1, 0, 0},
+                            {0, 1, 0},
+                            {0, 0, 1}};
+double test_array4[2][3] = {{1, 2, 3},
+                            {0, 1, 0}};
+double test_array5[3][3] = {{4, 2, 2},
+                            {2, 3, 1},
+                            {7, 3, 1}};
+double test_array6[4][4] = {{7, 11, 9, 10},
+                            {6, 6, 5, 5},
+                            {1, 2, 1, 2},
+                            {3, 4, 3, 4}};
+
+
+
+TEST_CASE("Constructor test", "[Matrix]"){
+    Matrix m1;
+    REQUIRE(m1.get_height() == 0);
+    REQUIRE(m1.get_width() == 0);
+
+    Matrix m2(2, 0);
+    REQUIRE(m2.get_height() == 0);
+    REQUIRE(m2.get_width() == 0);
+
+    Matrix m3(3, 2, 3);
+    REQUIRE(m3.get_height() == 3);
+    REQUIRE(m3.get_width() == 2);
+    for (int row = 0; row < 3; row++)
+        for (int col = 0; col < 2; col++)
+            REQUIRE(m3.get(row, col) == 3);
+
+    Matrix m4(3, 3, IDENTITY);
+    REQUIRE(m4.get_height() == 3);
+    REQUIRE(m4.get_width() == 3);
+    for (int row = 0; row < 3; row++)
+        for (int col = 0; col < 3; col++)
+            REQUIRE(m4.get(row, col) == (row == col ? 1 : 0));
+
+    Matrix m5(-2, -1, 5);
+    REQUIRE(m5.get_height() == 0);
+    REQUIRE(m5.get_width() == 0);
 }
 
 TEST_CASE("operator== test", "[Matrix]"){
@@ -36,6 +81,60 @@ TEST_CASE("operator== test", "[Matrix]"){
     REQUIRE((Matrix(4, 3, 5) == Matrix(4, 3, 5)));
     REQUIRE((Matrix(4, 4, IDENTITY) == Matrix(4, 4, IDENTITY)));
 }
+
+TEST_CASE("operator+ test", "[Matrix]"){
+    SECTION("Correct matrices"){
+        // arrange
+        Matrix a1(1, 1, 2);
+        Matrix b1(1, 1, 3);
+
+        Matrix a2(2, 3, 4);
+        Matrix b2(2, 3, 5);
+
+        Matrix a3(4, 4, IDENTITY);
+        Matrix b3(4, 4, IDENTITY);
+
+        // act
+        Matrix c1 = a1 + b1;
+        Matrix c2 = a2 + b2;
+        Matrix c3 = a3 + b3;
+
+        // assert
+        PLUS_REQUIRE(a1, b1, c1);
+        PLUS_REQUIRE(a2, b2, c2);
+        PLUS_REQUIRE(a3, b3, c3);
+    }
+    SECTION("Incorrect matrices"){
+        // arrange
+        Matrix a1(2, 1, 2);
+        Matrix b1(1, 1, 3);
+
+        Matrix a2(5, 3, 4);
+        Matrix b2(2, 3, 5);
+
+        Matrix a3(0, 4, IDENTITY);
+        Matrix b3(4, 4, IDENTITY);
+
+        // act
+        Matrix c1 = a1 + b1;
+        Matrix c2 = a2 + b2;
+        Matrix c3 = a3 + b3;
+
+        // assert
+        REQUIRE(c1.get_height() == 0);
+        REQUIRE(c1.get_width() == 0);
+
+        REQUIRE(c2.get_height() == 0);
+        REQUIRE(c2.get_width() == 0);
+
+        REQUIRE(c3.get_height() == 0);
+        REQUIRE(c3.get_width() == 0);
+    }
+}
+
+//TEST_CASE("operator* test", "[Matrix]"){
+//
+//}
 
 
 //template <typename T>
@@ -88,36 +187,13 @@ void TestPlus_TwoIncorrectMatGot_SumReturns();
 
 int return_code = 0;
 
-double test_array1[2][2] = {{1, 2},
-                            {4, 3}};
-double test_array2[2][2] = {{2, 2},
-                            {2, 2}};
-double test_array3[3][3] = {{1, 0, 0},
-                            {0, 1, 0},
-                            {0, 0, 1}};
-double test_array4[2][3] = {{1, 2, 3},
-                            {0, 1, 0}};
-double test_array5[3][3] = {{4, 2, 2},
-                            {2, 3, 1},
-                            {7, 3, 1}};
-double test_array6[4][4] = {{7, 11, 9, 10},
-                            {6, 6, 5, 5},
-                            {1, 2, 1, 2},
-                            {3, 4, 3, 4}};
-
-
 
 void print_test_message(const char* message){
     std::cout << message;
 }
 
 void print_test_result(int returnCode){
-    if (returnCode == 0){
-        std::cout << ANSI_BACK_COLOR_GREEN "Test passed" << "\n";
-    }
-    else{
-        std::cout << ANSI_BACK_COLOR_RED "Test failed" << "\n";
-    }
+
 }
 
 void TestConstructor_UsualSizeInit_CorrectMatrixReturns(){
@@ -146,30 +222,7 @@ void TestConstructor_UsualSizeInit_CorrectMatrixReturns(){
 }
 
 void TestPlus_TwoCorrectMatGot_SumReturns(){
-    print_test_message("Test for operator + for two correct matrices:\t");
-    return_code = 0;
 
-    // arrange
-    Matrix a1(1, 1, 2);
-    Matrix b1(1, 1, 3);
-
-    Matrix a2(2, 3, 4);
-    Matrix b2(2, 3, 5);
-
-    Matrix a3(4, 4, IDENTITY);
-    Matrix b3(4, 4, IDENTITY);
-
-    // act
-    Matrix c1 = a1 + b1;
-    Matrix c2 = a2 + b2;
-    Matrix c3 = a3 + b3;
-
-    // assert
-    assert_plus(a1, b1, c1);
-    assert_plus(a2, b2, c2);
-    assert_plus(a3, b3, c3);
-
-    print_test_message(ANSI_BACK_COLOR_GREEN"Test passed\n");
 }
 
 void TestPlus_TwoIncorrectMatGot_SumReturns(){
@@ -196,7 +249,6 @@ void TestPlus_TwoIncorrectMatGot_SumReturns(){
     assert_plus(a2, b2, c2);
     assert_plus(a3, b3, c3);
 
-    print_test_message(ANSI_BACK_COLOR_GREEN"Test passed\n");
 }
 
 
@@ -272,19 +324,11 @@ void assert_plus(Matrix &matrix1, Matrix &matrix2, Matrix &matrix_valid_result){
 
     if (matrix1.get_height() == matrix2.get_height() && matrix1.get_width() == matrix2.get_width()){
         if (matrix1.get_height() != matrix_sum.get_height()){
-            std::cout << "ERROR!\n";
-            std::cout << "Incorrect result size";
-            std::cout << ANSI_BACK_COLOR_RED"Test failed";
             exit(1);
         }
         for (int row = 0; row < matrix_sum.get_height(); row++){
             for (int col = 0; col < matrix_sum.get_width(); col++){
                 if (matrix_sum.get(row, col) != matrix_valid_result.get(row, col)){
-                    std::cout << "ERROR!\n";
-                    std::cout << "Value is not correct";
-                    std::cout << "Expected:" << matrix_valid_result;
-                    std::cout << "Got: " << matrix_sum;
-                    std::cout << ANSI_BACK_COLOR_RED"Test failed";
                     exit(1);
                 }
             }
@@ -293,7 +337,7 @@ void assert_plus(Matrix &matrix1, Matrix &matrix2, Matrix &matrix_valid_result){
     else if (matrix_sum.get_height() != 0 || matrix_sum.get_width() != 0){
         std::cout << "ERROR!\n";
         std::cout << "The matrix" << matrix_sum << "is not null-matrix";
-        std::cout << ANSI_BACK_COLOR_RED"Test failed";
+        std::cout << "Test failed";
         exit(1);
     }
 }
@@ -365,3 +409,20 @@ void assert_plus(Matrix &matrix1, Matrix &matrix2, Matrix &matrix_valid_result){
 //        }
 //    }
 //}
+
+
+//#ifndef _WIN32
+//
+//#define ANSI_COLOR_RESET   "\x1b[0m"
+//
+//#define ANSI_BACK_COLOR_RED   "\x1b[41m"
+//#define ANSI_BACK_COLOR_GREEN "\x1b[42m"
+//
+//#else
+//
+//#define ANSI_COLOR_RESET
+//
+//#define ANSI_BACK_COLOR_RED
+//#define ANSI_BACK_COLOR_GREEN
+//
+//#endif
