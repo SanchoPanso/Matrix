@@ -1,4 +1,4 @@
 #!/bin/sh
 
-g++ -o runner main.cpp matrix.cpp
-chmod +x runner && ./runner
+g++ -o test_runner main.cpp matrix.cpp
+chmod +x test_runner && ./test_runner
