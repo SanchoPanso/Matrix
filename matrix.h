@@ -19,7 +19,7 @@ private:
 public:
     explicit Matrix(unsigned int height = 0, unsigned int width = 0, double value = 0.0);
     Matrix(unsigned int height, unsigned int width, MatrixType type);
-    Matrix(double* arr, unsigned int rows, unsigned int cols);
+    Matrix(unsigned int rows, unsigned int cols, double* arr);
     Matrix(const Matrix& other);
     Matrix(Matrix&& other) noexcept;
     Matrix& operator= (const Matrix& other);

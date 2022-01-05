@@ -26,25 +26,6 @@
 }                                                                                           \
 
 
-double test_array1[2][2] = {{1, 2},
-                            {4, 3}};
-double test_array2[2][2] = {{2, 2},
-                            {2, 2}};
-double test_array3[3][3] = {{1, 0, 0},
-                            {0, 1, 0},
-                            {0, 0, 1}};
-double test_array4[2][3] = {{1, 2, 3},
-                            {0, 1, 0}};
-double test_array5[3][3] = {{4, 2, 2},
-                            {2, 3, 1},
-                            {7, 3, 1}};
-double test_array6[4][4] = {{7, 11, 9, 10},
-                            {6, 6, 5, 5},
-                            {1, 2, 1, 2},
-                            {3, 4, 3, 4}};
-
-
-
 TEST_CASE("Constructor test", "[Matrix]"){
     Matrix m1;
     REQUIRE(m1.get_height() == 0);
@@ -136,6 +117,59 @@ TEST_CASE("operator+ test", "[Matrix]"){
 //
 //}
 
+TEST_CASE("determinant test", "[Matrix]"){
+
+    double test_array1[2][2] = {{1, 2},
+                                {4, 3}};
+    double test_array2[2][2] = {{2, 2},
+                                {2, 2}};
+    double test_array3[3][3] = {{1, 0, 0},
+                                {0, 1, 0},
+                                {0, 0, 1}};
+    double test_array4[2][3] = {{1, 2, 3},
+                                {0, 1, 0}};
+    double test_array5[3][3] = {{4, 2, 2},
+                                {2, 3, 1},
+                                {7, 3, 1}};
+    double test_array6[4][4] = {{7, 11, 9, 10},
+                                {6, 6, 5, 5},
+                                {1, 2, 1, 2},
+                                {3, 4, 3, 4}};
+
+    REQUIRE(Matrix().det() == Approx(0.));
+    REQUIRE(Matrix(3, 3, IDENTITY).det() == Approx(1.));
+    REQUIRE((Matrix(1, 1, 1).det()) == Approx(1.));
+    REQUIRE((Matrix(2, 2, 3).det()) == Approx(0.));
+    REQUIRE((Matrix(2, 4, 4).det()) == Approx(0.));
+    REQUIRE((Matrix(2, 2, (double*) test_array1).det()) == Approx(-5.));
+    REQUIRE((Matrix(3, 3, (double*) test_array5).det()) == Approx(-20.));
+    REQUIRE((Matrix(4, 4, (double*) test_array6).det()) == Approx(6.));
+}
+
+TEST_CASE("trace test", "[Matrix]"){
+    double test_array1[2][2] = {{1, 2},
+                                {4, 3}};
+    double test_array2[2][2] = {{2, 2},
+                                {2, 2}};
+    double test_array3[3][3] = {{1, 0, 0},
+                                {0, 1, 0},
+                                {0, 0, 1}};
+    double test_array4[2][3] = {{1, 2, 3},
+                                {0, 1, 0}};
+    double test_array5[3][3] = {{4, 2, 2},
+                                {2, 3, 1},
+                                {7, 3, 1}};
+    double test_array6[4][4] = {{7, 11, 9, 10},
+                                {6, 6, 5, 5},
+                                {1, 2, 1, 2},
+                                {3, 4, 3, 4}};
+
+    REQUIRE((Matrix().tr()) == Approx(0.));
+    REQUIRE((Matrix(1, 1, 1).tr()) == Approx(1.));
+    REQUIRE((Matrix(2, 2, 2).tr()) == Approx(4.));
+    REQUIRE((Matrix(2, 4, 4).tr()) == Approx(8.));
+    REQUIRE((Matrix(2, 2, (double*) test_array1).tr()) == Approx(4.));
+}
 
 //template <typename T>
 //void print_test_failed(T value, T expected, const char* message){

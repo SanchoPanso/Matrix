@@ -39,7 +39,7 @@ Matrix::Matrix(unsigned int height, unsigned int width, MatrixType type){
     }
 }
 
-Matrix::Matrix(double* arr, unsigned int rows, unsigned int cols){
+Matrix::Matrix(unsigned int rows, unsigned int cols, double* arr){
 
     allocate_memory(rows, cols);
 
