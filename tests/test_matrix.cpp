@@ -53,8 +53,19 @@ int determinant_test();
 
 bool check_almost_equal(double a, double b, double max_rel_diff = pow(10, -10));
 
+void run_test(int (*test)(), const char* message){
+    printf(message);
+    int retval = test();
+    if (retval == 0){
+        printf(ANSI_BACK_COLOR_GREEN"Passed\n");
+    }
+    else{
+        printf(ANSI_BACK_COLOR_RED"Failed\n");
+    }
+}
+
 int main(){
-    RUN_TEST(constructor_test, "Constructor test: ");
+    run_test(constructor_test, "Constructor test: ");
 //    RUN_TEST(operator_equals_test, "Operator== test: ");
 //    RUN_TEST(operator_plus_test, "Operator+ test: ");
 //    RUN_TEST(determinant_test, "Determinant test: ");
