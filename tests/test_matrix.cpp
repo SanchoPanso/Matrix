@@ -54,7 +54,7 @@ int determinant_test();
 bool check_almost_equal(double a, double b, double max_rel_diff = pow(10, -10));
 
 void run_test(int (*test)(), const char* message){
-    printf(message);
+    printf("%s", message);
     int retval = test();
     if (retval == 0){
         printf(ANSI_BACK_COLOR_GREEN"Passed\n");
