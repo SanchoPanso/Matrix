@@ -193,20 +193,3 @@ int main(){
 //
 //int return_code = 0;
 //
-
-
-//#ifndef _WIN32
-//
-//#define ANSI_COLOR_RESET   "\x1b[0m"
-//
-//#define ANSI_BACK_COLOR_RED   "\x1b[41m"
-//#define ANSI_BACK_COLOR_GREEN "\x1b[42m"
-//
-//#else
-//
-//#define ANSI_COLOR_RESET
-//
-//#define ANSI_BACK_COLOR_RED
-//#define ANSI_BACK_COLOR_GREEN
-//
-//#endif
