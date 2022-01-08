@@ -1,5 +1,6 @@
 #include "../matrix.h"
 #include <cmath>
+#include <iostream>
 
 #ifndef _WIN32
 #   define ANSI_COLOR_RESET   "\x1b[0m"
@@ -13,19 +14,15 @@
 
 #define TO_STR(value) #value
 
-#define CHECK_EQUAL(got_value, expected_value) {        \
-    if (got_value != expected_value){                   \
-        printf("Got: ");                                \
-        printf(TO_STR(got_value));                      \
-        printf("\n");                                   \
-        printf("Expected: ");                           \
-        printf(TO_STR(expected_value));                 \
-        printf("\n");                                   \
-        return 1;                                       \
-    }                                                   \
+#define CHECK_EQUAL(got_value, expected_value){                         \
+    if (got_value != expected_value){                                   \
+        std::cout << "Got: " << TO_STR(got_value) << '\n';              \
+        std::cout << "Expected: " << TO_STR(expected_value) << '\n';    \
+        return 1;                                                       \
+    }                                                                   \
 }
 
-#define RUN_TEST(test, message) {                       \
+#define RUN_TEST(test, message){                       \
     printf(message);                                    \
     int retval = test();                                \
     if (retval == 0){                                   \
@@ -51,16 +48,16 @@ int operator_equals_test();
 int operator_plus_test();
 int determinant_test();
 
-bool check_almost_equal(double a, double b, double max_rel_diff = pow(10, -10));
+bool check_almost_equal(double a, double b, double max_rel_diff = 1e-10);
 
 void run_test(int (*test)(), const char* message){
     printf("%s", message);
     int retval = test();
     if (retval == 0){
-        printf(ANSI_BACK_COLOR_GREEN"Passed\n");
+        std::cout << ANSI_BACK_COLOR_GREEN"Passed\n";
     }
     else{
-        printf(ANSI_BACK_COLOR_RED"Failed\n");
+        std::cout << ANSI_BACK_COLOR_RED"Failed\n";
     }
 }
 
