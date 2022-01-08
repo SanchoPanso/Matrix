@@ -22,7 +22,7 @@
     }                                                                   \
 }
 
-#define RUN_TEST(test, message){                       \
+#define RUN_TEST(test, message){                        \
     printf(message);                                    \
     int retval = test();                                \
     if (retval == 0){                                   \
@@ -50,22 +50,22 @@ int determinant_test();
 
 bool check_almost_equal(double a, double b, double max_rel_diff = 1e-10);
 
-void run_test(int (*test)(), const char* message){
-    printf("%s", message);
-    int retval = test();
-    if (retval == 0){
-        std::cout << ANSI_BACK_COLOR_GREEN"Passed\n";
-    }
-    else{
-        std::cout << ANSI_BACK_COLOR_RED"Failed\n";
-    }
-}
+//void run_test(int (*test)(), const char* message){
+//    printf("%s", message);
+//    int retval = test();
+//    if (retval == 0){
+//        std::cout << ANSI_BACK_COLOR_GREEN"Passed\n";
+//    }
+//    else{
+//        std::cout << ANSI_BACK_COLOR_RED"Failed\n";
+//    }
+//}
 
 int main(){
-    run_test(constructor_test, "Constructor test: ");
-//    RUN_TEST(operator_equals_test, "Operator== test: ");
-//    RUN_TEST(operator_plus_test, "Operator+ test: ");
-//    RUN_TEST(determinant_test, "Determinant test: ");
+    RUN_TEST(constructor_test, "Constructor test: ");
+    RUN_TEST(operator_equals_test, "Operator== test: ");
+    RUN_TEST(operator_plus_test, "Operator+ test: ");
+    RUN_TEST(determinant_test, "Determinant test: ");
     return 0;
 }
 
