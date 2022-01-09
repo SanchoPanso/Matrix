@@ -36,6 +36,7 @@ public:
     Matrix operator- (const Matrix& other);     // return Matrix() - not compatible, return result - compatible
     Matrix operator* (const Matrix& other);     // return Matrix() - not compatible, return result - compatible
     bool operator== (const Matrix& other);
+    bool operator!= (const Matrix& other);
 public:
     double tr();    // if height or width is zero - return 0.0
     double det();   // if height or width is zero or the matrix is not square - return 0.0

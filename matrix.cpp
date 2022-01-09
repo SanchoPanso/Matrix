@@ -217,6 +217,11 @@ bool Matrix::operator== (const Matrix& other){
     }
 }
 
+// review
+bool Matrix::operator!= (const Matrix& other){
+    return !(*this == other);
+}
+
 // find trace of matrix
 double Matrix::tr(){
 

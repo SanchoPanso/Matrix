@@ -22,11 +22,19 @@
     }                                                                   \
 }
 
+#define CHECK_ALMOST_EQUAL(got_value, expected_value){                  \
+    if (!check_almost_equal((got_value), (expected_value))){            \
+        std::cout << "\nGot: " << got_value << '\n';                    \
+        std::cout << "Expected: " << expected_value << '\n';            \
+        return 1;                                                       \
+    }                                                                   \
+}
+
 #define RUN_TEST(test, message){                        \
     printf(message);                                    \
     int retval = test();                                \
     if (retval == 0){                                   \
-        printf(ANSI_BACK_COLOR_GREEN"Passed\n");        \
+        printf(ANSI_BACK_COLOR_GREEN"\tPassed\n");      \
     }                                                   \
     else{                                               \
         printf(ANSI_BACK_COLOR_RED"Failed\n");          \
@@ -46,25 +54,17 @@
 int constructor_test();
 int operator_equals_test();
 int operator_plus_test();
+int trace_test();
 int determinant_test();
 
 bool check_almost_equal(double a, double b, double max_rel_diff = 1e-10);
 
-//void run_test(int (*test)(), const char* message){
-//    printf("%s", message);
-//    int retval = test();
-//    if (retval == 0){
-//        std::cout << ANSI_BACK_COLOR_GREEN"Passed\n";
-//    }
-//    else{
-//        std::cout << ANSI_BACK_COLOR_RED"Failed\n";
-//    }
-//}
 
 int main(){
     RUN_TEST(constructor_test, "Constructor test: ");
     RUN_TEST(operator_equals_test, "Operator== test: ");
     RUN_TEST(operator_plus_test, "Operator+ test: ");
+    RUN_TEST(trace_test, "Trace test: ")
     RUN_TEST(determinant_test, "Determinant test: ");
     return 0;
 }
@@ -159,6 +159,32 @@ int operator_plus_test(){
         CHECK_EQUAL(c3.get_height(), 0);
         CHECK_EQUAL(c3.get_width(), 0);
     }
+
+    return 0;
+}
+
+int trace_test(){
+
+    double test_array1[2][2] = {{1, 2},
+                                {4, 3}};
+
+    double test_array2[3][3] = {{4, 2, 2},
+                                {2, 3, 1},
+                                {7, 3, 1}};
+
+    double trace1 = Matrix().tr();
+    double trace2 = Matrix(1, 1, 1).tr();
+    double trace3 = Matrix(2, 2, 2).tr();
+    double trace4 = Matrix(2, 4, 4).tr();
+    double trace5 = Matrix(2, 2, (double*) test_array1).tr();
+    double trace6 = Matrix(3, 3, (double*) test_array2).tr();
+
+    CHECK_ALMOST_EQUAL(trace1, 0.);
+    CHECK_ALMOST_EQUAL(trace2, 1.);
+    CHECK_ALMOST_EQUAL(trace3, 4.);
+    CHECK_ALMOST_EQUAL(trace4, 8.);
+    CHECK_ALMOST_EQUAL(trace5, 4.);
+    CHECK_ALMOST_EQUAL(trace6, 8.);
 
     return 0;
 }
