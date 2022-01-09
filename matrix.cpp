@@ -370,7 +370,7 @@ void Matrix::apply_forward_elimination(){
 }
 
 // allocate memory for matrix
-void Matrix:: allocate_memory(unsigned int height, unsigned int width){
+void Matrix::allocate_memory(unsigned int height, unsigned int width){
 
     // if any dimension is zero then not to allocate memory
     // and leave data_1d and data_2d with default value (nullptr)
