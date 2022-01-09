@@ -259,12 +259,20 @@ double Matrix::det(){
 
 // overload of operator "<<" for matrix output
 std::ostream& operator<< (std::ostream &out, const Matrix& m){
+    out << "[";
     for (int row = 0; row < m.height; row++){
+        if (row > 0)
+            out << " ";
         for (int cols = 0; cols < m.width; cols++){
-            out << m.data_2d[row][cols] << " ";
+            out << m.data_2d[row][cols];
+            if (cols < m.width - 1)
+                out << " ";
         }
-        out << "\n";
+        if (row < m.height - 1)
+            out << "\n";
     }
+    out << "]\n";
+
     return out;
 }
 
