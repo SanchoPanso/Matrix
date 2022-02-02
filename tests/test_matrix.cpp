@@ -34,9 +34,11 @@
     printf(message);                                    \
     int retval = test();                                \
     if (retval == 0){                                   \
-        printf(ANSI_BACK_COLOR_GREEN"\tPassed\n");      \
+        printf("\t");                                   \
+        printf(ANSI_BACK_COLOR_GREEN"Passed\n");        \
     }                                                   \
     else{                                               \
+        printf("\t");                                   \
         printf(ANSI_BACK_COLOR_RED"Failed\n");          \
     }                                                   \
 }
