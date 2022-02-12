@@ -61,17 +61,16 @@ bool check_almost_equal(double a, double b, double max_rel_diff = 1e-10);
 
 
 int main(){
-    std::cout << Matrix(4, 4, 4);
-    std::cout << Matrix();
-
     RUN_TEST(constructor_test, "Constructor test: ");
     RUN_TEST(operator_equals_test, "Operator== test: ");
     RUN_TEST(operator_plus_test, "Operator+ test: ");
     RUN_TEST(trace_test, "Trace test: ")
     RUN_TEST(determinant_test, "Determinant test: ");
+
+
+
     return 0;
 }
-
 
 int constructor_test(){
     Matrix m1;
